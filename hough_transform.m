@@ -1,31 +1,36 @@
-function [m, b] = hough_transform(edge_map)
+function [a, b, r] = hough_transform(edge_map)
     
     %% find x, y position from edge map
     [edge_y, edge_x] = find(edge_map);
-    
-    %% range of b
-    H = size(edge_map, 1);
-    b_range = -H : 1 : H;
-    
+
     %% range of m
-    m_step = 0.01;
-    m_max = 5;
-    m_min = -m_max;
-    m_range = m_min : m_step : m_max;
+    theta_min = 0;
+    theta_max = 360;
+    theta_range = 0:360;
+
+    %% range of r
+    r_min = 10;
+    r_max = 10;
+    r_range = r_min:r_max;
     
     %% create vote matrix
-    V = zeros(length(m_range), length(b_range));
+    V = zeros(length(edge_x), length(edge_y), length(r_range));
     
     %% add votes
     for i = 1 : length(edge_y)
         y = edge_y(i);
         x = edge_x(i);
-        for b_index = 1 : length(b_range)
-            m = (-1 / x) * b_range(b_index) + (y / x);
-            if m <= m_max && m >= m_min
-                m_index = round((m - m_min) / m_step) + 1;
-                V(m_index, b_index) = V(m_index, b_index) + 1;
-            end
+
+        for r = r_min : r_max
+           for theta = theta_min : theta_max
+               a = round(x - r * cos(theta * pi/180));
+               b = round(y - r * sin(theta * pi/180));
+               if a > 1 && a < length(edge_x) && ...
+                  b > 1 && b < length(edge_y)
+                V(a, b, r-r_min+1) = V(a, b, r-r_min+1) + 1;
+               
+               end
+           end
         end
     end
 
@@ -34,8 +39,9 @@ function [m, b] = hough_transform(edge_map)
     
     %% find the maximal vote
     max_vote = max(V(:));
-    [max_m_index, max_b_index] = find( V == max_vote );
-    m = m_range(max_m_index);
-    b = b_range(max_b_index);
+    [max_a_index, max_b_index, max_r_index] = find( V == max_vote );
+    a = max_a_index;
+    b = max_b_index;
+    r = r_range(max_r_index);
 
 end
