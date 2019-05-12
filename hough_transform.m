@@ -3,7 +3,7 @@ function [a, b, r] = hough_transform(edge_map)
     %% find x, y position from edge map
     [edge_y, edge_x] = find(edge_map);
 
-    %% range of m
+    %% range of theta
     theta_min = 0;
     theta_max = 360;
     theta_range = 0:360;
@@ -32,9 +32,6 @@ function [a, b, r] = hough_transform(edge_map)
            end
         end
     end
-
-    %% visualize votes
-    % figure, imagesc(V); xlabel('b'); ylabel('m'); 
     
     %% find the maximal vote
     max_vote = max(V(:));

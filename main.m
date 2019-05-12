@@ -1,7 +1,7 @@
 
 %% load input image
 % name = 'lines';
-name = 'bridge';
+name = 'desk';
 % name = 'hill';
 
 img = imread(sprintf('%s.png', name));
@@ -12,7 +12,7 @@ edge_map = edge(rgb2gray(img), 'canny', 0.1, 3);
 % figure, imshow(edge_map);
 
 
-%% Hough Transform (vote for m and b)
+%% Hough Transform (vote for a, b, and r)
 [a, b, r] = hough_transform(edge_map);
 ang = 0 : 0.01 : 2 * pi;
 xp = r * cos(ang);
