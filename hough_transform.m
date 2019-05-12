@@ -1,4 +1,4 @@
-function [a, b, r] = hough_transform(edge_map, r_min, r_max)
+function [as, bs, rs] = hough_transform(edge_map, r_min, r_max, num_circles)
 
 %% find x, y position from edge map
 [edge_y, edge_x] = find(edge_map);
@@ -47,7 +47,7 @@ end
 
 r_votes(1:r_min, :, :, :) = zeros(r_min, 4); % Ignore votes less than r_min
 
-[~, index] = max(r_votes(:, 1));
-a = r_votes(index, 2);
-b = r_votes(index, 3);
-r = r_votes(index, 4);
+[~, indices] = maxk(r_votes(:, 1), num_circles);
+as = r_votes(indices, 2);
+bs = r_votes(indices, 3);
+rs = r_votes(indices, 4);
