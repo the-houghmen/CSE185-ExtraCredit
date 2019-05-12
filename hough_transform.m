@@ -10,11 +10,11 @@ function [a, b, r] = hough_transform(edge_map)
 
     %% range of r
     r_min = 10;
-    r_max = 10;
+    r_max = 60;
     r_range = r_min:r_max;
     
     %% create vote matrix
-    V = zeros(length(edge_x), length(edge_y), length(r_range));
+    V = zeros(size(edge_map, 2), size(edge_map, 1), length(r_range));
     
     %% add votes
     for i = 1 : length(edge_y)
@@ -25,10 +25,9 @@ function [a, b, r] = hough_transform(edge_map)
            for theta = theta_min : theta_max
                a = round(x - r * cos(theta * pi/180));
                b = round(y - r * sin(theta * pi/180));
-               if a > 1 && a < length(edge_x) && ...
-                  b > 1 && b < length(edge_y)
-                V(a, b, r-r_min+1) = V(a, b, r-r_min+1) + 1;
-               
+               if a > 1 && a < size(edge_map, 2) && ...
+                  b > 1 && b < size(edge_map, 1)
+                    V(a, b, r-r_min+1) = V(a, b, r-r_min+1) + 1;
                end
            end
         end

@@ -14,12 +14,11 @@ edge_map = edge(rgb2gray(img), 'canny', 0.1, 3);
 
 %% Hough Transform (vote for m and b)
 [a, b, r] = hough_transform(edge_map);
-x = 1:size(img, 2);
-y_plus = sqrt(r .^ 2 - (x - a) .^ 2) + b;
-y_minus = -sqrt(r .^ 2 - (x - a) .^ 2) + b;
+ang = 0 : 0.01 : 2 * pi;
+xp = r * cos(ang);
+yp = r * sin(ang);
 
-figure, imshow(img); title('Your implementation (mb)'); hold on;
-plot(x, y_plus, 'LineWidth', 4, 'Color', 'red');
-plot(x, y_minus, 'LineWidth', 4, 'Color', 'red');
+figure, imshow(img); title('Circles Detected'); hold on;
+plot(a+xp, b+yp, 'LineWidth', 4, 'Color', 'blue');
 h = gcf;
 saveas(h, sprintf('%s_circle.png', name));
