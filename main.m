@@ -1,7 +1,7 @@
 
 %% load input image
 % name = 'lines';
-name = 'oranges';
+name = 'desk';
 % name = 'hill';
 
 img = imread(sprintf('%s.png', name));
@@ -21,7 +21,7 @@ num_circles = 5;
 
 figure, imshow(img);
 title(sprintf('First %d Circles Detected', num_circles)); hold on;
-ang = 0 : 0.01 : 2*pi
+ang = 0 : 0.01 : 2*pi;
 
 for i = 1:num_circles
     xp = rs(i) * cos(ang);
