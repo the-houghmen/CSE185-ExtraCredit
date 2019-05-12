@@ -1,7 +1,7 @@
 
 %% load input image
 % name = 'lines';
-name = 'desk';
+name = 'oranges';
 % name = 'hill';
 
 img = imread(sprintf('%s.png', name));
@@ -13,7 +13,7 @@ edge_map = edge(rgb2gray(img), 'canny', 0.1, 3);
 
 
 %% Hough Transform (vote for a, b, and r)
-[a, b, r] = hough_transform(edge_map);
+[a, b, r] = hough_transform(edge_map, 10, 200);
 ang = 0 : 0.01 : 2 * pi;
 xp = r * cos(ang);
 yp = r * sin(ang);
